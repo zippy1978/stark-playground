@@ -46,7 +46,7 @@ build: clean
 
 run: build
 	@echo "$(LOG_HEADER)Runinng..."
-	@-$(TARGET_DIR)/$(PROJECT_NAME)
+	@-$(TARGET_DIR)/$(PROJECT_NAME) $(ARGS)
 	
 stop-watch:
 	@-touch $(PID)
