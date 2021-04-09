@@ -3,7 +3,10 @@
  */
 extern exit(code: int)
 
-func handleFileError(fr: FileResult) {
+import str
+import fs
+
+func handleFileError(fr: fs.FileResult) {
     if (fr.error != null) {
         println(fr.error)
         exit(1)
@@ -23,25 +26,25 @@ func main(args: string[]): int {
     }
     
     projectName := args[1]
-    makefilePath := concatString(projectName, "/Makefile")
-    sourcePath := concatString(projectName, "/src")
-    mainPath := concatString(sourcePath, "/main.st")
+    makefilePath := str.concatString(projectName, "/Makefile")
+    sourcePath := str.concatString(projectName, "/src")
+    mainPath := str.concatString(sourcePath, "/main.st")
     
-    if (fileExists(makefilePath)) {
+    if (fs.fileExists(makefilePath)) {
         println("Project already generated")
         return 1
     }
-
-    fr := createDirectory(projectName)
+    
+    fr := fs.createDirectory(projectName)
     handleFileError(fr)
     
-    fr = writeFileWithContent(makefilePath, makefileTemplate())
+    fr = fs.writeFileWithContent(makefilePath, makefileTemplate())
     handleFileError(fr)
     
-    fr = createDirectory(sourcePath)
+    fr = fs.createDirectory(sourcePath)
     handleFileError(fr)
     
-    fr = writeFileWithContent(mainPath, mainStTemplate())
+    fr = fs.writeFileWithContent(mainPath, mainStTemplate())
     handleFileError(fr)
     
     return 0

@@ -1,6 +1,8 @@
 /**
  * File manipulation utility functions.
  */
+module fs
+
 extern fopen(filename: any, accessMode: any): any
 extern fputs(content: any, file: any): int
 extern fclose(file: any): int

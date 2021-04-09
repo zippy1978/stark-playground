@@ -9,6 +9,8 @@ extern time(t: any): any
 extern difftime(end: any, begin: any): int
 extern clock(): int
 
+import fs
+
 struct File {
     descriptor: any,
     name: string

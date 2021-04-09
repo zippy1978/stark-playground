@@ -1,0 +1,1 @@
+workspace(name = "stark-playground")
