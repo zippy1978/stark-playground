@@ -1,4 +1,9 @@
-load("//stark-bazel:stark.bzl", "stark_module")
+load(
+    "@rules_stark//stark:defs.bzl",
+    "stark_binary",
+    "stark_module",
+    "stark_test",
+)
 
 stark_module(
     name = "fs",
