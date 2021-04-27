@@ -16,3 +16,12 @@ stark_module(
     srcs = ["src/str.st"],
     visibility = ["//visibility:public"],
 )
+
+stark_module(
+    name = "http",
+    srcs = ["src/http.st"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":fs",
+    ],
+)
