@@ -12,12 +12,6 @@ stark_module(
 )
 
 stark_module(
-    name = "str",
-    srcs = ["src/str.st"],
-    visibility = ["//visibility:public"],
-)
-
-stark_module(
     name = "http",
     srcs = ["src/http.st"],
     visibility = ["//visibility:public"],

@@ -32,9 +32,9 @@ func main(): int {
     while(true) {
         
         // Print time
-        print("⏰ ")
-        print(formatTime(now(), "%H:%M:%S"))
-        print("\r")
+        print("⏰ " + formatTime(now(), "%H:%M:%S") + "\r")
+        //print(formatTime(now(), "%H:%M:%S"))
+        //print("\r")
         printflush()
         
         // Every second

@@ -9,7 +9,6 @@ stark_binary(
     name = "main",
     srcs = glob(["src/*.st"]),
     deps = [
-        "//modules:str",
         "//modules:fs",
     ],
 )

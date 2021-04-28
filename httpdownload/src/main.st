@@ -22,8 +22,8 @@ func main(): int {
     // Open file
     f := fs.openFile("example.html", "w")
     handleFileError(f)
-
-    // Donwload
+    
+    // Download
     url := "https://example.com"
     hr := http.downloadFile(url, f.value)
     handleHttpError(hr)

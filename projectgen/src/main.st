@@ -3,7 +3,6 @@
  */
 extern exit(code: int)
 
-import str
 import fs
 
 func handleFileError(fr: fs.FileResult) {
@@ -26,9 +25,9 @@ func main(args: string[]): int {
     }
     
     projectName := args[1]
-    makefilePath := str.concatString(projectName, "/Makefile")
-    sourcePath := str.concatString(projectName, "/src")
-    mainPath := str.concatString(sourcePath, "/main.st")
+    makefilePath := projectName + "/Makefile"
+    sourcePath := projectName + "/src"
+    mainPath := sourcePath + "/main.st"
     
     if (fs.fileExists(makefilePath)) {
         println("Project already generated")

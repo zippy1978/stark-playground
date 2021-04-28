@@ -22,11 +22,11 @@ func readFromFile(file: fs.File): StringResult {
 }
 
 func main(): int {
-
+    
     startTime := clock()
     
     res := 0
-
+    
     // Write to file
     f := fs.openFile("test", "w")
     if (f.error != null) {
@@ -47,7 +47,7 @@ func main(): int {
             }
         }
     }
-
+    
     // Read from file
     fileContent: string = null
     f = fs.openFile("test", "r")
@@ -71,7 +71,7 @@ func main(): int {
             }
         }
     }
-
+    
     // Parse file content
     if (res == 0) {
         ptr := strtok(toCString(fileContent), toCString(","))
@@ -80,12 +80,10 @@ func main(): int {
             ptr = strtok(null, toCString(","))
         }
     }
-
+    
     endTime := clock()
-
-    print("time: ")
-    print((endTime - startTime) as string)
-    println("ms")
-
+    
+    println("time: " + (endTime - startTime) as string + "ms")
+    
     return res
 }
