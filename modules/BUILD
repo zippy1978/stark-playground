@@ -12,6 +12,12 @@ stark_module(
 )
 
 stark_module(
+    name = "time",
+    srcs = ["src/time.st"],
+    visibility = ["//visibility:public"],
+)
+
+stark_module(
     name = "http",
     srcs = ["src/http.st"],
     visibility = ["//visibility:public"],

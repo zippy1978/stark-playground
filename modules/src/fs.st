@@ -10,17 +10,25 @@ extern fgets(buffer: any, maxLength: int, file: any): any
 extern mkdir(path: any, mode: int): int
 extern access(path: any, mode: int): int
 
+/**
+ * File struct.
+ */
 struct File {
     descriptor: any,
     name: string
 }
 
+/**
+ * File result.
+ */
 struct FileResult {
     value: File,
     error: string
 }
 
-
+/**
+ * Open file with the given access mode.
+ */
 func openFile(name: string, accessMode: string): FileResult {
     fd := fopen(toCString(name), toCString(accessMode))
     error: string = null
@@ -34,6 +42,9 @@ func openFile(name: string, accessMode: string): FileResult {
     return FileResult(value, error)
 }
 
+/**
+ * Write a string to a File.
+ */
 func writeToFile(file: File, content: string): FileResult {
     error: string = null
     if (file.descriptor == null) {
@@ -44,6 +55,9 @@ func writeToFile(file: File, content: string): FileResult {
     return FileResult(file, error)
 }
 
+/**
+ * Close an opened File.
+ */
 func closeFile(file: File): FileResult {
     error: string = null
     if (file.descriptor == null) {
@@ -59,6 +73,9 @@ func closeFile(file: File): FileResult {
     return FileResult(file, error)
 }
 
+/**
+ * Create directory.
+ */
 func createDirectory(path: string): FileResult  {
     error: string = null
     if (mkdir(toCString(path), 99999999999999999999) != 0) {
@@ -67,10 +84,16 @@ func createDirectory(path: string): FileResult  {
     return FileResult(null, error)
 }
 
+/**
+ * Test if file exists.
+ */
 func fileExists(filename: string): bool {
     return access(toCString(filename), 0) == 0
 }
 
+/**
+ * Write string to a file name.
+ */
 func writeFileWithContent(filename: string, content: string): FileResult {
     
     fr := openFile(filename, "w")

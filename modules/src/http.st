@@ -12,10 +12,17 @@ extern curl_easy_strerror(res: int): any
 
 import fs
 
+/**
+ * HTTP result.
+ */
 struct HttpResult {
     error: string
 }
 
+/**
+ * Download resource pointed by an url
+ * to a file.
+ */
 func downloadFile(url: string, file: fs.File): HttpResult  {
     
     result := HttpResult(null)
