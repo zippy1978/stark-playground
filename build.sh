@@ -1,1 +1,0 @@
-bazel build --action_env=STARK_RUNTIME //readfile:main

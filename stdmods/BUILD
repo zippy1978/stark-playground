@@ -7,19 +7,26 @@ load(
 
 stark_module(
     name = "fs",
-    srcs = ["src/fs.st"],
+    srcs = glob(["fs/src/*.st"]),
     visibility = ["//visibility:public"],
 )
 
 stark_module(
     name = "time",
-    srcs = ["src/time.st"],
+    srcs = glob(["time/src/*.st"]),
     visibility = ["//visibility:public"],
 )
+# stark_test(
+#     name = "time_tests",
+#     srcs = glob(["time/tests/*.test.st"]),
+#     deps = [
+#         ":time",
+#     ],
+# )
 
 stark_module(
     name = "http",
-    srcs = ["src/http.st"],
+    srcs = glob(["http/src/*.st"]),
     visibility = ["//visibility:public"],
     deps = [
         ":fs",

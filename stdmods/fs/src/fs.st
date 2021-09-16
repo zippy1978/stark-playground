@@ -9,6 +9,7 @@ extern fclose(file: any): int
 extern fgets(buffer: any, maxLength: int, file: any): any
 extern mkdir(path: any, mode: int): int
 extern access(path: any, mode: int): int
+extern remove(filename: any): int
 
 /**
  * File struct.
@@ -73,10 +74,14 @@ func closeFile(file: File): FileResult {
     return FileResult(file, error)
 }
 
+func deleteFile(filename: string): bool {
+    return remove(toCString(filename))
+}
+
 /**
  * Create directory.
  */
-func createDirectory(path: string): FileResult  {
+func createDirectory(path: string): FileResult {
     error: string = null
     if (mkdir(toCString(path), 99999999999999999999) != 0) {
         error = "Directory creation failed"
@@ -105,11 +110,11 @@ func writeFileWithContent(filename: string, content: string): FileResult {
     if (fr.error != null) {
         return FileResult(null, fr.error)
     }
-
+    
     fr = closeFile(fr.value)
     if (fr.error != null) {
         return FileResult(null, fr.error)
     }
-
+    
     return FileResult(null, null)
 }
