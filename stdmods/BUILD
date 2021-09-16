@@ -16,13 +16,13 @@ stark_module(
     srcs = glob(["time/src/*.st"]),
     visibility = ["//visibility:public"],
 )
-# stark_test(
-#     name = "time_tests",
-#     srcs = glob(["time/tests/*.test.st"]),
-#     deps = [
-#         ":time",
-#     ],
-# )
+stark_test(
+    name = "time_tests",
+    srcs = glob(["time/tests/*.test.st"]),
+    deps = [
+        ":time",
+    ],
+)
 
 stark_module(
     name = "http",
