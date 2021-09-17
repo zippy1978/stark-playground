@@ -22,6 +22,8 @@ jobs:
 
     - name: Debug
       run: |
+        LLVM_PATH=${{ env.LLVM_PATH }}
+        echo "CC=$LLVM_PATH/bin/clang" >> $GITHUB_ENV
         cc --version
     
     - name: Mount bazel cache
