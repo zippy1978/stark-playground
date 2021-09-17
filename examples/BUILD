@@ -11,6 +11,9 @@ stark_binary(
     deps = [
         "//stdmods:time",
     ],
+    linkopts = [
+        "-fuse-ld=bfd",
+    ]
 )
 
 stark_binary(
