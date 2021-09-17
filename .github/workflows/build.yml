@@ -7,13 +7,21 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout sources
+      uses: actions/checkout@v1
 
-    - name: Set up Clang
+    - name: Install clang
       uses: egor-tensin/setup-clang@v1
       with:
         version: latest
         platform: x64
+
+    - name: Install bazelisk
+      run: |
+        curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.1.0/bazelisk-linux-amd64"
+        mkdir -p "${GITHUB_WORKSPACE}/bin/"
+        mv bazelisk-linux-amd64 "${GITHUB_WORKSPACE}/bin/bazel"
+        chmod +x "${GITHUB_WORKSPACE}/bin/bazel"
     
     - name: Install native dependencies
       run: |
@@ -22,18 +30,13 @@ jobs:
               sudo apt-get -y install libcurl4-openssl-dev
           fi
     
+
     - name: Mount bazel cache
       uses: actions/cache@v1
       with:
         path: "/home/runner/.cache/bazel"
         key: bazel
 
-    - name: Install bazelisk
-      run: |
-        curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.1.0/bazelisk-linux-amd64"
-        mkdir -p "${GITHUB_WORKSPACE}/bin/"
-        mv bazelisk-linux-amd64 "${GITHUB_WORKSPACE}/bin/bazel"
-        chmod +x "${GITHUB_WORKSPACE}/bin/bazel"
 
     - name: Test stdmods
       run: |
