@@ -11,6 +11,10 @@ stark_binary(
     deps = [
         "//stdmods:time",
     ],
+    linkopts = [
+        "-fno-lto",
+        "-fno-use-linker-plugin",
+    ],
 )
 
 stark_binary(
@@ -22,6 +26,8 @@ stark_binary(
     ],
     linkopts = [
         "-lcurl",
+        "-fno-lto",
+        "-fno-use-linker-plugin",
     ],
 )
 
@@ -31,6 +37,10 @@ stark_binary(
     deps = [
         "//stdmods:fs",
     ],
+    linkopts = [
+        "-fno-lto",
+        "-fno-use-linker-plugin",
+    ],
 )
 
 stark_binary(
@@ -38,5 +48,9 @@ stark_binary(
     srcs = glob(["readfile/src/*.st"]),
     deps = [
         "//stdmods:fs"
-    ]
+    ],
+    linkopts = [
+        "-fno-lto",
+        "-fno-use-linker-plugin",
+    ],
 )
