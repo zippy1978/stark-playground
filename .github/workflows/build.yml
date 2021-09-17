@@ -17,6 +17,7 @@ jobs:
       run: |
          if [ "$RUNNER_OS" == "Linux" ]; then
               sudo apt-get update 
+              sudo apt-get -y install git cmake bison libfl-dev flex ninja-build
               sudo apt-get purge --auto-remove llvm
               wget https://apt.llvm.org/llvm.sh
               chmod +x llvm.sh
