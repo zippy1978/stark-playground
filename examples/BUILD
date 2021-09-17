@@ -12,7 +12,7 @@ stark_binary(
         "//stdmods:time",
     ],
     linkopts = [
-        "-fno-lto",
+        #"-fno-lto",
         "-fno-use-linker-plugin",
     ],
 )
