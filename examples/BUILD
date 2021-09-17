@@ -12,7 +12,7 @@ stark_binary(
         "//stdmods:time",
     ],
     linkopts = [
-        "-fuse-ld=bfd",
+        "-fuse-ld=lld",
     ]
 )
 
