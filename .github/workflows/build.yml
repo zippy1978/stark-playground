@@ -2,10 +2,6 @@ name: Build
 
 on: [push]
 
-env:
-  CC: /usr/bin/clang
-  CXX: /usr/bin/clang++
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,6 +9,13 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
+    - name: Install tools
+      run: |
+         if [ "$RUNNER_OS" == "Linux" ]; then
+              sudo apt-get update 
+              sudo apt-get -y install binutils
+         fi
+    
     - name: Set up Clang
       uses: egor-tensin/setup-clang@v1
       with:
