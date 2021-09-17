@@ -2,6 +2,10 @@ name: Build
 
 on: [push]
 
+env:
+  CC: /usr/bin/clang
+  CXX: /usr/bin/clang++
+
 jobs:
   build:
     runs-on: ubuntu-latest
