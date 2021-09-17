@@ -13,7 +13,7 @@ stark_binary(
     ],
     linkopts = [
         #"-fno-lto",
-        "-fno-use-linker-plugin",
+        #"-fno-use-linker-plugin",
     ],
 )
 
