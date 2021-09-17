@@ -26,10 +26,6 @@ jobs:
       run: |
         "${GITHUB_WORKSPACE}/bin/bazel" test //stdmods:all
 
-    - name: Test examples
-      run: |
-        "${GITHUB_WORKSPACE}/bin/bazel" test //examples:all
-
     - name: Build examples
       run: |
         "${GITHUB_WORKSPACE}/bin/bazel" build //examples:all
