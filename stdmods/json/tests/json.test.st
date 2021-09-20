@@ -11,7 +11,7 @@ func testParseBool() {
     assertTrue(trueResult.value != null)
     assertTrue(trueResult.value.type == "bool")
     assertTrue(trueResult.value.boolValue)
-
+    
     falseResult := json.parse("false")
     assertTrue(falseResult.value != null)
     assertTrue(falseResult.value.type == "bool")
@@ -23,7 +23,7 @@ func testParseInt() {
     assertTrue(nonZeroResult.value != null)
     assertTrue(nonZeroResult.value.type == "int")
     assertTrue(nonZeroResult.value.intValue == 12)
-
+    
     zeroResult := json.parse("0")
     assertTrue(zeroResult.value != null)
     assertTrue(zeroResult.value.type == "int")

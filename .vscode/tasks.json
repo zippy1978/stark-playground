@@ -1,0 +1,84 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "windows": {
+        "command": "bazel",
+        "args": [
+          "build",
+          "//stdmods:all",
+          "//examples:all"
+        ]
+      },
+      "linux": {
+        "command": "bazel",
+        "args": [
+          "build",
+          "//stdmods:all",
+          "//examples:all"
+        ]
+      },
+      "osx": {
+        "command": "bazel",
+        "args": [
+          "build",
+          "//stdmods:all",
+          "//examples:all"
+        ]
+      }
+    },
+    {
+      "label": "test",
+      "type": "shell",
+      "windows": {
+        "command": "bazel",
+        "args": [
+          "test",
+          "//stdmods:all"
+        ]
+      },
+      "linux": {
+        "command": "bazel",
+        "args": [
+          "test",
+          "//stdmods:all"
+        ]
+      },
+      "osx": {
+        "command": "bazel",
+        "args": [
+          "test",
+          "//stdmods:all"
+        ]
+      }
+    },
+    {
+      "label": "clean",
+      "type": "shell",
+      "windows": {
+        "command": "bazel",
+        "args": [
+          "clean"
+        ]
+      },
+      "linux": {
+        "command": "bazel",
+        "args": [
+          "clean"
+        ]
+      },
+      "osx": {
+        "command": "bazel",
+        "args": [
+          "clean"
+        ]
+      }
+    }
+  ]
+}

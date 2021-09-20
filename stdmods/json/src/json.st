@@ -1,5 +1,7 @@
 module json
 
+import str
+
 // Forward declaration
 struct JSONValue
 
@@ -34,18 +36,24 @@ struct JSONResult {
 
 func parse(value: string): JSONResult {
     result := JSONResult(null, null)
+    cleanedValue := str.trim(value)
     // null
-    if (value == "null") {
+    if (cleanedValue == "null") {
         result.value = JSONValue("null", null, 0, 0.0, false, null, null)
     }
     // boolean
-    if (value == "true" || value == "false") {
-        result.value = JSONValue("bool", null, 0, 0.0, value as bool, null, null)
+    if (cleanedValue == "true" || value == "false") {
+        result.value = JSONValue("bool", null, 0, 0.0, cleanedValue as bool, null, null)
     }
     // int
-    intValue := value as int
-    if (intValue != 0 || value == "0") {
+    intValue := cleanedValue as int
+    if (intValue != 0 || cleanedValue == "0") {
         result.value = JSONValue("int", null, intValue, 0.0, false, null, null)
+    }
+
+    // Unexpected error
+    if (result.value == null) {
+        result.error = "cannot parse JSON from " + cleanedValue
     }
 
     return result

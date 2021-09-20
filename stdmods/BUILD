@@ -25,15 +25,33 @@ stark_test(
 )
 
 stark_module(
+    name = "str",
+    srcs = glob(["str/src/*.st"]),
+    visibility = ["//visibility:public"],
+)
+stark_test(
+    name = "str_tests",
+    srcs = glob(["str/tests/*.test.st"]),
+    deps = [
+        ":str",
+    ],
+)
+
+stark_module(
     name = "json",
     srcs = glob(["json/src/*.st"]),
     visibility = ["//visibility:public"],
+    deps = [
+        ":str",
+    ],
 )
 stark_test(
     name = "json_tests",
     srcs = glob(["json/tests/*.test.st"]),
     deps = [
         ":json",
+        # TODO: should not have to pass transitive dependency again here !
+        ":str",
     ],
 )
 
