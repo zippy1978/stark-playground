@@ -60,8 +60,58 @@ func parse(value: string): JSONResult {
     }
     // string
     if (str.startsWith(cleanedValue, "\"") && str.endsWith(cleanedValue, "\"")) {
-        // TODO replace escaped strings !
-        result.value = JSONValue("string", str.subString(cleanedValue, 1, cleanedValue.len - 1), 0, 0.0, false, null, null)
+        // Replace escaped strings
+        stringValue := str.subString(cleanedValue, 1, cleanedValue.len - 1)
+        stringValue = str.replace(stringValue, "\\r", "\r")
+        stringValue = str.replace(stringValue, "\\n", "\n")
+        stringValue = str.replace(stringValue, "\\t", "\t")
+        result.value = JSONValue("string", stringValue, 0, 0.0, false, null, null)
+    }
+    // object
+    if (str.startsWith(cleanedValue, "{") && str.endsWith(cleanedValue, "}")) {
+        objectString := str.trim(str.subString(cleanedValue, 1, cleanedValue.len - 1))
+        propertyValue := ""
+        propertyName := ""
+        insideQuotes := false
+        currentProperty := JSONProperty(null, null)
+        objectProperties: JSONProperty[]
+        oi := 0
+        while (oi < objectString.len) {
+            currentChar := str.subString(objectString, oi, oi +1)
+            // Detect values beteween quotes
+            if (currentChar == "\"") {
+                insideQuotes = (insideQuotes == false)
+            }
+            // Collect property name
+            if (currentProperty.name == null && insideQuotes) {
+                propertyName = propertyName + currentChar
+            }
+            // Collect property value
+            if (currentProperty.name != null) {
+                propertyValue = propertyValue + currentChar
+            }
+            // Detect end of key name
+            if (currentChar == ":" && (insideQuotes == false)) {
+                // Drop the starting quote with substring
+                currentProperty.name = str.subString(propertyName, 1, propertyName.len )
+                propertyName = ""
+            }
+            // Detect end of property value
+            if ((currentChar == "," || ((oi + 1) == objectString.len)) && (insideQuotes == false)) {
+                pr := parse(propertyValue)
+                result.error = pr.error
+                if (pr.error == null) {
+                    currentProperty.value = pr.value
+                    propertyValue = ""
+                    objectProperties = objectProperties + [currentProperty]
+                    currentProperty = JSONProperty(null, null)
+                }
+                
+            }
+            oi = oi + 1
+        }
+        result.value = JSONValue("object", null, 0, 0.0, false, null, objectProperties)
+
     }
 
     // Unexpected error

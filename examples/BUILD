@@ -40,3 +40,12 @@ stark_binary(
         "//stdmods:fs"
     ],
 )
+
+stark_binary(
+    name = "readjson",
+    srcs = glob(["readjson/src/*.st"]),
+    deps = [
+        "//stdmods:json",
+        "//stdmods:str"
+    ],
+)
