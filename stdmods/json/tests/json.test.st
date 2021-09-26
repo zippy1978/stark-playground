@@ -60,7 +60,7 @@ func testParseObject() {
 }
 
 func testParseArray() {
-    result := json.parse("[\"hello\", {\"key1\" : 1}]")
+    result := json.parse("[\"hello\", {\"key1\" : [{\"name\": \"item1\"}, {\"name\": \"item2\"}]}]")
     assertTrue(result.value != null)
     assertTrue(result.value.type == "array")
     assertTrue(result.value.arrayValue != null)
@@ -69,8 +69,11 @@ func testParseArray() {
     assertStringEquals(result.value.arrayValue[0].stringValue, "hello")
     assertStringEquals(result.value.arrayValue[1].type, "object")
     assertStringEquals(result.value.arrayValue[1].objectValue[0].name, "key1")
-    assertStringEquals(result.value.arrayValue[1].objectValue[0].value.type, "int")
-    assertIntEquals(result.value.arrayValue[1].objectValue[0].value.intValue, 1)
+    assertStringEquals(result.value.arrayValue[1].objectValue[0].value.type, "array")
+    assertStringEquals(result.value.arrayValue[1].objectValue[0].value.arrayValue[1].type, "object")
+    assertStringEquals(result.value.arrayValue[1].objectValue[0].value.arrayValue[1].objectValue[0].name, "name")
+    assertStringEquals(result.value.arrayValue[1].objectValue[0].value.arrayValue[1].objectValue[0].value.type, "string")
+    assertStringEquals(result.value.arrayValue[1].objectValue[0].value.arrayValue[1].objectValue[0].value.stringValue, "item2")
 }
 
 

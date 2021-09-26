@@ -82,7 +82,7 @@ func parse(value: string): JSONResult {
         while (oi < objectString.len && (hasError == false)) {
             currentChar := str.subString(objectString, oi, oi +1)
             
-            // Detect values beteween quotes
+            // Detect values between quotes
             if (currentChar == "\"") {
                 insideQuotes = (insideQuotes == false)
             }
@@ -147,6 +147,8 @@ func parse(value: string): JSONResult {
     if (str.startsWith(cleanedValue, "[") && str.endsWith(cleanedValue, "]")) {
         arrayString := str.trim(str.subString(cleanedValue, 1, cleanedValue.len - 1))
         entries: JSONValue[]
+        objectDepth := 0
+        arrayDepth := 0
         entryValue := ""
         insideQuotes := false
         hasError := false
@@ -157,10 +159,24 @@ func parse(value: string): JSONResult {
             if (currentChar == "\"") {
                 insideQuotes = (insideQuotes == false)
             }
+            // Detect values inside objets
+            if (currentChar == "{") {
+                objectDepth = objectDepth + 1
+            }
+            if (currentChar == "}") {
+                objectDepth = objectDepth - 1
+            }
+            // Detect values inside arrays
+            if (currentChar == "[") {
+                arrayDepth = arrayDepth + 1
+            }
+            if (currentChar == "]") {
+                arrayDepth = arrayDepth - 1
+            }
             // Collect entry value
             entryValue = entryValue + currentChar
             // Detect end of entry value
-            if ((currentChar == "," || ((oi + 1) == arrayString.len)) && (insideQuotes == false)) {
+            if ((currentChar == "," || ((oi + 1) == arrayString.len)) && (insideQuotes == false) && (objectDepth == 0) && (arrayDepth == 0)) {
                 // Remove trailing comma if any
                 if (str.endsWith(entryValue, ",")) {
                     entryValue = str.subString(entryValue, 0, entryValue.len - 1)
@@ -188,7 +204,6 @@ func parse(value: string): JSONResult {
     if (result.value == null && result.error == null) {
         result.error = "cannot parse JSON from " + cleanedValue
     }
-
 
     return result
 }
