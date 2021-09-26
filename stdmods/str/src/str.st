@@ -25,11 +25,15 @@ func trim(value: string): string {
     start := 0
     end := value.len
     // TODO : also handle \t \n and \r !!
-    while (subString(value, start, start + 1) == " ") {
+    test := subString(value, start, start + 1)
+    while (test == " " || test == "\t" || test == "\r" || test == "\n") {
         start = start + 1
+        test = subString(value, start, start + 1)
     }
-    while (subString(value, end - 1, end) == " ") {
+    test = subString(value, end - 1, end)
+    while (test == " " || test == "\t" || test == "\r" || test == "\n") {
         end = end - 1
+        test = subString(value, end - 1, end)
     }
     return subString(value, start, end)
 }

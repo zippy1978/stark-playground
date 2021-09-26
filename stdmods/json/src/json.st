@@ -73,14 +73,32 @@ func parse(value: string): JSONResult {
         propertyValue := ""
         propertyName := ""
         insideQuotes := false
+        objectDepth := 0
+        arrayDepth := 0
         currentProperty := JSONProperty(null, null)
         objectProperties: JSONProperty[]
+        hasError := false
         oi := 0
-        while (oi < objectString.len) {
+        while (oi < objectString.len && (hasError == false)) {
             currentChar := str.subString(objectString, oi, oi +1)
+            
             // Detect values beteween quotes
             if (currentChar == "\"") {
                 insideQuotes = (insideQuotes == false)
+            }
+            // Detect values inside objets
+            if (currentChar == "{") {
+                objectDepth = objectDepth + 1
+            }
+            if (currentChar == "}") {
+                objectDepth = objectDepth - 1
+            }
+            // Detect values inside arrays
+            if (currentChar == "[") {
+                arrayDepth = arrayDepth + 1
+            }
+            if (currentChar == "]") {
+                arrayDepth = arrayDepth - 1
             }
             // Collect property name
             if (currentProperty.name == null && insideQuotes) {
@@ -93,11 +111,17 @@ func parse(value: string): JSONResult {
             // Detect end of key name
             if (currentChar == ":" && (insideQuotes == false)) {
                 // Drop the starting quote with substring
-                currentProperty.name = str.subString(propertyName, 1, propertyName.len )
-                propertyName = ""
+                if (propertyName.len > 0) {
+                    currentProperty.name = str.subString(propertyName, 1, propertyName.len )
+                    propertyName = ""
+                }
             }
             // Detect end of property value
-            if ((currentChar == "," || ((oi + 1) == objectString.len)) && (insideQuotes == false)) {
+            if ((currentChar == "," || ((oi + 1) == objectString.len)) && (insideQuotes == false) && (objectDepth == 0) && (arrayDepth == 0)) {
+                // Remove trailing comma if any
+                if (str.endsWith(propertyValue, ",")) {
+                    propertyValue = str.subString(propertyValue, 0, propertyValue.len - 1)
+                }
                 pr := parse(propertyValue)
                 result.error = pr.error
                 if (pr.error == null) {
@@ -105,19 +129,66 @@ func parse(value: string): JSONResult {
                     propertyValue = ""
                     objectProperties = objectProperties + [currentProperty]
                     currentProperty = JSONProperty(null, null)
+                } else {
+                    // Parsing error
+                    hasError = true
                 }
                 
             }
             oi = oi + 1
         }
-        result.value = JSONValue("object", null, 0, 0.0, false, null, objectProperties)
+        if (hasError == false) {
+            result.value = JSONValue("object", null, 0, 0.0, false, null, objectProperties)
+        }
+
+    }
+
+    // array
+    if (str.startsWith(cleanedValue, "[") && str.endsWith(cleanedValue, "]")) {
+        arrayString := str.trim(str.subString(cleanedValue, 1, cleanedValue.len - 1))
+        entries: JSONValue[]
+        entryValue := ""
+        insideQuotes := false
+        hasError := false
+        oi := 0
+        while (oi < arrayString.len && (hasError == false)) {
+            currentChar := str.subString(arrayString, oi, oi +1)
+            // Detect values beteween quotes
+            if (currentChar == "\"") {
+                insideQuotes = (insideQuotes == false)
+            }
+            // Collect entry value
+            entryValue = entryValue + currentChar
+            // Detect end of entry value
+            if ((currentChar == "," || ((oi + 1) == arrayString.len)) && (insideQuotes == false)) {
+                // Remove trailing comma if any
+                if (str.endsWith(entryValue, ",")) {
+                    entryValue = str.subString(entryValue, 0, entryValue.len - 1)
+                }
+                pr := parse(entryValue)
+                result.error = pr.error
+                if (pr.error == null) {
+                    entries = entries + [pr.value]
+                    entryValue = ""
+                } else {
+                    // Parsing error
+                    hasError = true
+                }
+                
+            }
+            oi = oi + 1
+        }
+        if (hasError == false) {
+            result.value = JSONValue("array", null, 0, 0.0, false, entries, null)
+        }
 
     }
 
     // Unexpected error
-    if (result.value == null) {
+    if (result.value == null && result.error == null) {
         result.error = "cannot parse JSON from " + cleanedValue
     }
+
 
     return result
 }
