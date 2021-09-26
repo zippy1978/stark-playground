@@ -42,10 +42,16 @@ stark_binary(
 )
 
 stark_binary(
-    name = "readjson",
-    srcs = glob(["readjson/src/*.st"]),
+    name = "jsonbench",
+    srcs = glob(["jsonbench/src/*.st"]),
     deps = [
+         "//stdmods:time",
         "//stdmods:json",
-        "//stdmods:str"
+        "//stdmods:str",
+        "//stdmods:fs",
+        "//stdmods:http"
+    ],
+    linkopts = [
+        "-lcurl",
     ],
 )

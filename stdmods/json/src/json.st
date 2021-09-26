@@ -79,11 +79,11 @@ func parse(value: string): JSONResult {
         objectProperties: JSONProperty[]
         hasError := false
         oi := 0
+        previousChar := ""
         while (oi < objectString.len && (hasError == false)) {
             currentChar := str.subString(objectString, oi, oi +1)
-            
             // Detect values between quotes
-            if (currentChar == "\"") {
+            if (currentChar == "\"" && previousChar != "\\") {
                 insideQuotes = (insideQuotes == false)
             }
             // Detect values inside objets
@@ -135,6 +135,7 @@ func parse(value: string): JSONResult {
                 }
                 
             }
+            previousChar = currentChar
             oi = oi + 1
         }
         if (hasError == false) {
@@ -152,11 +153,12 @@ func parse(value: string): JSONResult {
         entryValue := ""
         insideQuotes := false
         hasError := false
+        previousChar := ""
         oi := 0
         while (oi < arrayString.len && (hasError == false)) {
             currentChar := str.subString(arrayString, oi, oi +1)
-            // Detect values beteween quotes
-            if (currentChar == "\"") {
+            // Detect values between quotes
+            if (currentChar == "\"" && previousChar != "\\") {
                 insideQuotes = (insideQuotes == false)
             }
             // Detect values inside objets
@@ -192,6 +194,7 @@ func parse(value: string): JSONResult {
                 }
                 
             }
+            previousChar = currentChar
             oi = oi + 1
         }
         if (hasError == false) {

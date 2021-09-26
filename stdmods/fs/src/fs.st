@@ -6,6 +6,7 @@ module fs
 extern fopen(filename: any, accessMode: any): any
 extern fputs(content: any, file: any): int
 extern fclose(file: any): int
+extern feof(file: any): int
 extern fgets(buffer: any, maxLength: int, file: any): any
 extern mkdir(path: any, mode: int): int
 extern access(path: any, mode: int): int
@@ -94,6 +95,13 @@ func createDirectory(path: string): FileResult {
  */
 func fileExists(filename: string): bool {
     return access(toCString(filename), 0) == 0
+}
+
+/**
+ * Test if file is at the end (EOF).
+ */
+func fileIsEOF(file: File): bool {
+    return feof(file.descriptor) != 0
 }
 
 /**
