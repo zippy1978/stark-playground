@@ -4,10 +4,7 @@
     {
       "label": "build",
       "type": "shell",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "group": "build",
       "windows": {
         "command": "bazel",
         "args": [
@@ -31,7 +28,8 @@
           "//stdmods:all",
           "//examples:all"
         ]
-      }
+      },
+      "problemMatcher": []
     },
     {
       "label": "test",
@@ -56,6 +54,11 @@
           "test",
           "//stdmods:all"
         ]
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
       }
     },
     {

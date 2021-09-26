@@ -1,3 +1,6 @@
+/**
+ * JSON manipulation functions.
+ */
 module json
 
 import str
@@ -34,6 +37,11 @@ struct JSONResult {
     error: string
 }
 
+/**
+ * Parse a JSON string to a JSONValue.
+ * @param value: stirng to parse
+ * @result a JSONResult containing either a value or an error
+ */
 func parse(value: string): JSONResult {
     result := JSONResult(null, null)
     cleanedValue := str.trim(value)
@@ -49,6 +57,11 @@ func parse(value: string): JSONResult {
     intValue := cleanedValue as int
     if (intValue != 0 || cleanedValue == "0") {
         result.value = JSONValue("int", null, intValue, 0.0, false, null, null)
+    }
+    // string
+    if (str.startsWith(cleanedValue, "\"") && str.endsWith(cleanedValue, "\"")) {
+        // TODO replace escaped strings !
+        result.value = JSONValue("string", str.subString(cleanedValue, 1, cleanedValue.len - 1), 0, 0.0, false, null, null)
     }
 
     // Unexpected error

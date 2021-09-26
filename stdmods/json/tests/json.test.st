@@ -29,3 +29,10 @@ func testParseInt() {
     assertTrue(zeroResult.value.type == "int")
     assertTrue(zeroResult.value.intValue == 0)
 }
+
+func testParseString() {
+    result := json.parse("\"hello\"")
+    assertTrue(result.value != null)
+    assertTrue(result.value.type == "string")
+    assertStringEquals(result.value.stringValue, "hello")
+}
