@@ -1,9 +1,9 @@
-extern fgets(buffer: any, maxLength: int, file: any): any
-extern strtok(str: any, delim: any): any
+extern fgets(buffer: any, maxLength: int, file: any) => any
+extern strtok(str: any, delim: any) => any
 
-extern time(t: any): any
-extern difftime(end: any, begin: any): int
-extern clock(): int
+extern time(t: any) => any
+extern difftime(end: any, begin: any) => int
+extern clock() => int
 
 import fs
 
@@ -12,7 +12,7 @@ struct StringResult {
     error: string
 }
 
-func readFromFile(file: fs.File): StringResult {
+func readFromFile(file: fs.File) => StringResult {
     cstr: any = toCString("01234567890123456789012345678901234567890123456789")
     error: string = null
     if (fgets(cstr, 50, file.descriptor) == null) {
@@ -21,7 +21,7 @@ func readFromFile(file: fs.File): StringResult {
     return StringResult(fromCString(cstr), error)
 }
 
-func main(): int {
+func main() => int {
     
     startTime := clock()
     

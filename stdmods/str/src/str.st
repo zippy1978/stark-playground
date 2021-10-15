@@ -3,7 +3,7 @@
  */
 module str
 
-extern strtok(str: any, delim: any): any
+extern strtok(str: any, delim: any) => any
 
 /**
  * Get a sub string of a string.
@@ -12,7 +12,7 @@ extern strtok(str: any, delim: any): any
  * @param end: sub stirng end index
  * @return sub string as a new string
  */
-func subString(value: string, start: int, end: int): string {
+func subString(value: string, start: int, end: int) => string {
     return fromCSubString(toCString(value), start, end)
 }
 
@@ -21,7 +21,7 @@ func subString(value: string, start: int, end: int): string {
  * @param value: original string
  * @return trimmed stirng as a new string
  */
-func trim(value: string): string {
+func trim(value: string) => string {
     start := 0
     end := value.len
     // TODO : also handle \t \n and \r !!
@@ -44,7 +44,7 @@ func trim(value: string): string {
  * @param test: sub string to test
  * @return true if value starts with test
  */
-func startsWith(value: string, test: string): bool {
+func startsWith(value: string, test: string) => bool {
     return subString(value, 0, test.len) == test
 }
 
@@ -54,7 +54,7 @@ func startsWith(value: string, test: string): bool {
  * @param test: sub string to test
  * @return true if value ends with test
  */
-func endsWith(value: string, test: string): bool {
+func endsWith(value: string, test: string) => bool {
     return subString(value, value.len - test.len, value.len) == test
 }
 
@@ -64,7 +64,7 @@ func endsWith(value: string, test: string): bool {
  * @param separator: string to use a separator
  * @return a string[] contaning split string parts
  */
-func split(value: string, separator: string): string[] {
+func split(value: string, separator: string) => string[] {
     separatorAsCString := toCString(separator)
     result: string[] = null
     ptr := strtok(toCString(value), separatorAsCString)
@@ -85,7 +85,7 @@ func split(value: string, separator: string): string[] {
  * @param separator: string to use a separator
  * @return the joined string
  */
-func join(parts: string[], separator: string): string {
+func join(parts: string[], separator: string) => string {
     result := ""
     if (parts != null) {
         i := 0
@@ -107,7 +107,7 @@ func join(parts: string[], separator: string): string {
  * @param new: replacement sub string
  * return a string
  */
-func replace(value: string, old: string, new: string): string {
+func replace(value: string, old: string, new: string) => string {
     parts := split(value, old)
     result := ""
     if (startsWith(value, old)) {

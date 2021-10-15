@@ -2,8 +2,7 @@
  * File templates.
  */
  
-func mainStTemplate(): string {
-    return
+func mainStTemplate() => string {
 "
 func main(): int {
     println(\"Hello world !\")
@@ -12,8 +11,7 @@ func main(): int {
 "
 }
 
-func makefileTemplate(): string {
-    return
+func makefileTemplate() => string {
 "
 # Project settings
 PROJECT_NAME=$(shell basename \"$(PWD)\")

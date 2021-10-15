@@ -55,3 +55,24 @@ stark_binary(
         "-lcurl",
     ],
 )
+
+
+stark_binary(
+    name = "ui",
+    srcs = glob(["ui/src/*.st"]),
+    deps = [
+         "//stdmods:gfx"
+    ],
+    linkopts = [
+        "-lGLEW",
+        "-L/usr/local/Cellar/glfw/3.3.4/lib",
+        "-L/usr/local/lib",
+        "-lglfw",
+        #"-lglfw3",
+        #"-lopengl32",
+        "-framework OpenGL",
+        #"-lm",
+        #"-lGLU32",
+        #"-lGLEW32"
+    ],
+)

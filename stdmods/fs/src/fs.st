@@ -3,14 +3,14 @@
  */
 module fs
 
-extern fopen(filename: any, accessMode: any): any
-extern fputs(content: any, file: any): int
-extern fclose(file: any): int
-extern feof(file: any): int
-extern fgets(buffer: any, maxLength: int, file: any): any
-extern mkdir(path: any, mode: int): int
-extern access(path: any, mode: int): int
-extern remove(filename: any): int
+extern fopen(filename: any, accessMode: any) => any
+extern fputs(content: any, file: any) => int
+extern fclose(file: any) => int
+extern feof(file: any) => bool
+extern fgets(buffer: any, maxLength: int, file: any) => any
+extern mkdir(path: any, mode: int) => int
+extern access(path: any, mode: int) => bool
+extern remove(filename: any) => bool
 
 /**
  * File struct.
@@ -31,7 +31,7 @@ struct FileResult {
 /**
  * Open file with the given access mode.
  */
-func openFile(name: string, accessMode: string): FileResult {
+func openFile(name: string, accessMode: string) => FileResult {
     fd := fopen(toCString(name), toCString(accessMode))
     error: string = null
     value: File = null
@@ -47,7 +47,7 @@ func openFile(name: string, accessMode: string): FileResult {
 /**
  * Write a string to a File.
  */
-func writeToFile(file: File, content: string): FileResult {
+func writeToFile(file: File, content: string) => FileResult {
     error: string = null
     if (file.descriptor == null) {
         error = "file is not opened"
@@ -60,7 +60,7 @@ func writeToFile(file: File, content: string): FileResult {
 /**
  * Close an opened File.
  */
-func closeFile(file: File): FileResult {
+func closeFile(file: File) => FileResult {
     error: string = null
     if (file.descriptor == null) {
         error = "file is not opened"
@@ -75,14 +75,14 @@ func closeFile(file: File): FileResult {
     return FileResult(file, error)
 }
 
-func deleteFile(filename: string): bool {
-    return remove(toCString(filename))
+func deleteFile(filename: string) => bool {
+    remove(toCString(filename))
 }
 
 /**
  * Create directory.
  */
-func createDirectory(path: string): FileResult {
+func createDirectory(path: string) => FileResult {
     error: string = null
     if (mkdir(toCString(path), 99999999999999999999) != 0) {
         error = "Directory creation failed"
@@ -93,21 +93,21 @@ func createDirectory(path: string): FileResult {
 /**
  * Test if file exists.
  */
-func fileExists(filename: string): bool {
-    return access(toCString(filename), 0) == 0
+func fileExists(filename: string) => bool {
+    access(toCString(filename), 0) == false
 }
 
 /**
  * Test if file is at the end (EOF).
  */
-func fileIsEOF(file: File): bool {
-    return feof(file.descriptor) != 0
+func fileIsEOF(file: File) => bool {
+    feof(file.descriptor)
 }
 
 /**
  * Write string to a file name.
  */
-func writeFileWithContent(filename: string, content: string): FileResult {
+func writeFileWithContent(filename: string, content: string) => FileResult {
     
     fr := openFile(filename, "w")
     if (fr.error != null) {

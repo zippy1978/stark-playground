@@ -63,3 +63,9 @@ stark_module(
         ":fs",
     ],
 )
+
+stark_module(
+    name = "gfx",
+    srcs = glob(["gfx/src/*.st"]),
+    visibility = ["//visibility:public"],
+)

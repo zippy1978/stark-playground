@@ -42,7 +42,7 @@ struct JSONResult {
  * @param value: stirng to parse
  * @result a JSONResult containing either a value or an error
  */
-func parse(value: string): JSONResult {
+func parse(value: string) => JSONResult {
     result := JSONResult(null, null)
     cleanedValue := str.trim(value)
     // null

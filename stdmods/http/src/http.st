@@ -4,11 +4,11 @@
  */
 module http
 
-extern curl_easy_init(): any
+extern curl_easy_init() => any
 extern curl_easy_setopt(curl: any, opt: int, param: any)
-extern curl_easy_perform(curl: any): int
+extern curl_easy_perform(curl: any) => int
 extern curl_easy_cleanup(curl: any)
-extern curl_easy_strerror(res: int): any
+extern curl_easy_strerror(res: int) => any
 
 import fs
 
@@ -23,7 +23,7 @@ struct HttpResult {
  * Download resource pointed by an url
  * to a file.
  */
-func downloadFile(url: string, file: fs.File): HttpResult  {
+func downloadFile(url: string, file: fs.File) => HttpResult  {
     
     result := HttpResult(null)
     

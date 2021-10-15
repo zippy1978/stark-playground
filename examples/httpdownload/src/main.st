@@ -17,7 +17,7 @@ func handleHttpError(hr: http.HttpResult) {
     }
 }
 
-func main(): int {
+func main() => int {
     
     // Open file
     f := fs.openFile("example.html", "w")

@@ -16,7 +16,7 @@ func printUsage() {
     println("Usage: projectgen <projectname>")
 }
 
-func main(args: string[]): int {
+func main(args: string[]) => int {
     
     if (args.len < 2) {
         println("Missing project name")

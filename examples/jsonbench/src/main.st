@@ -1,5 +1,5 @@
 extern exit(code: int)
-extern fgets(buffer: any, maxLength: int, file: any): any
+extern fgets(buffer: any, maxLength: int, file: any) => any
 
 import fs
 import http
@@ -44,7 +44,7 @@ func downloadTestFile() {
     
 }
 
-func readTestFile(): string {
+func readTestFile() => string {
     
     result := ""
     
@@ -77,7 +77,7 @@ func parseTestFile() {
 }
 
 
-func main(): int {
+func main() => int {
     
     downloadTestFile()
     
@@ -90,6 +90,8 @@ func main(): int {
         printflush()
         parseTestFile()
         end := time.formatTime(time.now(), "%S") as double
+        println((end - start) as string)
+        i = i + 1
     }
     
     

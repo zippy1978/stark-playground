@@ -2,7 +2,7 @@ extern sleep(d: int)
 
 import time
 
-func main(): int {
+func main() => int {
     
     // Forever
     while(true) {
