@@ -4,6 +4,7 @@
 module str
 
 extern strtok(str: any, delim: any) => any
+extern strlen(str: any ) => int
 
 /**
  * Get a sub string of a string.
@@ -13,18 +14,22 @@ extern strtok(str: any, delim: any) => any
  * @return sub string as a new string
  */
 func subString(value: string, start: int, end: int) => string {
-    return fromCSubString(toCString(value), start, end)
+    return fromCSubString(value.data, start, end)
 }
 
 /**
  * Trims a string.
  * @param value: original string
- * @return trimmed stirng as a new string
+ * @return trimmed string as a new string
  */
 func trim(value: string) => string {
+
+    if (value.len == 0) {
+        return ""
+    }
+
     start := 0
     end := value.len
-    // TODO : also handle \t \n and \r !!
     test := subString(value, start, start + 1)
     while (test == " " || test == "\t" || test == "\r" || test == "\n") {
         start = start + 1
@@ -65,18 +70,33 @@ func endsWith(value: string, test: string) => bool {
  * @return a string[] contaning split string parts
  */
 func split(value: string, separator: string) => string[] {
-    separatorAsCString := toCString(separator)
-    result: string[] = null
-    ptr := strtok(toCString(value), separatorAsCString)
+    separatorAsCString := separator.data
+    result: string[]
+    valueAsCString := toCString(value)
+    ptr := strtok(valueAsCString, separatorAsCString)
     while(ptr != null) {
-        if (result == null) {
-            result = [fromCString(ptr)]
-        } else {
-            result = result + [fromCString(ptr)]
-        }
+        result = result + [fromCString(ptr)]
         ptr = strtok(null, separatorAsCString)
     }
     return result
+}
+
+/**
+ * Checks if a string contains a given substring.
+ * @param value: string to search in
+ * @param separator: sub string to search
+ * @return true/false
+ */
+func contains(value: string, subString: string) => bool {
+    found := 0
+    subStringCString := toCString(subString)
+    valueCString := toCString(value)
+    ptr := strtok(valueCString, subStringCString)
+    while(ptr != null) {
+        found = found + 1
+        ptr = strtok(null, subStringCString)
+    }
+    return found > 1
 }
 
 /**

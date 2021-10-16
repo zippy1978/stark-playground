@@ -10,16 +10,16 @@ extern strftime(buffer: any, bufferSize: int, format: any, time: any) => int
 /**
  * Time struct.
  */
-struct Time {
+/*struct Time {
     timeInfo: any
-}
+}*/
 
 /**
  * Return Time struct at the current date.
  */
-func now() => Time {
+/*func now() => Time {
     return Time(localtime(toIntPointer(time(null))))
-}
+}*/
 
 /**
  * Format a Time struct to a string.

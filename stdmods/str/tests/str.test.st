@@ -36,3 +36,7 @@ func testReplace() {
     original := "aahelloaaworldaa"
     assertStringEquals(str.replace(original, "aa", "bb"), "bbhellobbworldbb")
 }
+
+func testContains() {
+    assertTrue(str.contains("hello :) !", ":)"))
+}

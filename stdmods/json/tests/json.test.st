@@ -30,6 +30,19 @@ func testParseInt() {
     assertTrue(zeroResult.value.intValue == 0)
 }
 
+func testParseDouble() {
+    
+    nonZeroResult := json.parse("12.00000")
+    assertTrue(nonZeroResult.value != null)
+    assertStringEquals(nonZeroResult.value.type, "double")
+    assertTrue(nonZeroResult.value.doubleValue == 12.0)
+    
+    zeroResult := json.parse("0.000")
+    assertTrue(zeroResult.value != null)
+    assertStringEquals(zeroResult.value.type, "double")
+    assertDoubleEquals(zeroResult.value.doubleValue, 0.0)
+}
+
 func testParseString() {
     result := json.parse("\"hello\"")
     assertTrue(result.value != null)
@@ -57,6 +70,12 @@ func testParseObject() {
     assertStringEquals(result.value.objectValue[2].value.objectValue[0].name, "subkey1")
     assertStringEquals(result.value.objectValue[2].value.objectValue[0].value.type, "string")
     assertStringEquals(result.value.objectValue[2].value.objectValue[0].value.stringValue, "subvalue1")
+
+    resultEmptyObject := json.parse("{}")
+    assertTrue(resultEmptyObject.value != null)
+    assertTrue(resultEmptyObject.value.type == "object")
+    assertTrue(resultEmptyObject.value.objectValue != null)
+    assertIntEquals(resultEmptyObject.value.objectValue.len, 0)
 }
 
 func testParseArray() {

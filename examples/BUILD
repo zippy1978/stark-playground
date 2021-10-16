@@ -45,7 +45,6 @@ stark_binary(
     name = "jsonbench",
     srcs = glob(["jsonbench/src/*.st"]),
     deps = [
-         "//stdmods:time",
         "//stdmods:json",
         "//stdmods:str",
         "//stdmods:fs",
@@ -53,6 +52,16 @@ stark_binary(
     ],
     linkopts = [
         "-lcurl",
+    ],
+)
+
+stark_binary(
+    name = "bench",
+    srcs = glob(["bench/src/*.st"]),
+    deps = [
+        "//stdmods:perf",
+        "//stdmods:str",
+        "//stdmods:fs"
     ],
 )
 
@@ -64,15 +73,12 @@ stark_binary(
          "//stdmods:gfx"
     ],
     linkopts = [
-        "-lGLEW",
-        "-L/usr/local/Cellar/glfw/3.3.4/lib",
-        "-L/usr/local/lib",
-        "-lglfw",
-        #"-lglfw3",
-        #"-lopengl32",
-        "-framework OpenGL",
-        #"-lm",
-        #"-lGLU32",
-        #"-lGLEW32"
+        #"-lGLEW",
+        #"-L/usr/local/Cellar/glfw/3.3.4/lib",
+        #"-L/usr/local/lib",
+        #"-lglfw",
+        #"-framework OpenGL",
+        
+        "-l SDL2-2.0.0",
     ],
 )

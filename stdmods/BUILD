@@ -38,6 +38,20 @@ stark_test(
 )
 
 stark_module(
+    name = "perf",
+    srcs = glob(["perf/src/*.st"]),
+    visibility = ["//visibility:public"]
+)
+stark_test(
+    name = "perf_tests",
+    srcs = glob(["perf/tests/*.test.st"]),
+    deps = [
+        ":perf",
+        ":str",
+    ],
+)
+
+stark_module(
     name = "json",
     srcs = glob(["json/src/*.st"]),
     visibility = ["//visibility:public"],

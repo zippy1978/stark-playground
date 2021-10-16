@@ -1,10 +1,10 @@
 extern exit(code: int)
+extern sleep(duration: int)
 extern fgets(buffer: any, maxLength: int, file: any) => any
 
 import fs
 import http
 import json
-import time
 
 func handleFileError(fr: fs.FileResult) {
     if (fr.error != null) {
@@ -27,14 +27,12 @@ func handleJSONError(jr: json.JSONResult) {
     }
 }
 
-func downloadTestFile() {
+func downloadTestFile(url: string) {
     
     // Open file
     f := fs.openFile("test.json", "w")
     handleFileError(f)
     
-    // Download
-    url := "https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/twitter_timeline.json"
     hr := http.downloadFile(url, f.value)
     handleHttpError(hr)
     
@@ -55,8 +53,8 @@ func readTestFile() => string {
     cstr: any = toCString("01234567890123456789012345678901234567890123456789")
     while (fs.fileIsEOF(f.value) == false) {
         if (fgets(cstr, 50, f.value.descriptor) == null) {
-            println("failed to load test file")
-            exit(1)
+            //println("failed to load test file")
+            //exit(1)
         } else {
             result = result + fromCString(cstr)
         }
@@ -69,35 +67,74 @@ func readTestFile() => string {
     return result
 }
 
-func parseTestFile() {
+func averageTime(durations : int[]) => int {
+    total := 0
+    i := 0
+    while (i < durations.len) {
+        total = total + durations[i]
+        i = i + 1
+    }
+    return total / durations.len
+}
+
+func runTest(url: string, count: int) => int[] {
     
+    println("Testing " + url)
+    
+    downloadTestFile(url)
+    
+    i := 0
+    durations : int[]
     jsonString := readTestFile()
-    jr := json.parse(jsonString)
-    handleJSONError(jr)
+    while (i < count) {
+        start := time()
+        print("Running " + (i + 1) as string + "/" + count as string)
+        if (i > 0) {
+            print(" (" + averageTime(durations) as string + "ms)")
+        }
+        print("\r")
+        printflush()
+        
+        jr := json.parse(jsonString)
+        handleJSONError(jr)
+        
+        end := time()
+        duration := end - start
+        durations = durations + [duration]
+        i = i + 1
+    }
+    print("Ran with average time of " +  averageTime(durations) as string + "ms")
+    print("\r\n")
+    
+    return durations
 }
 
 
 func main() => int {
     
-    downloadTestFile()
+    println("Welcome to th JSON parse bench !")
     
-    i := 0
-    total := 5
-    durations : double[]
-    while (i < total) {
-        start := time.formatTime(time.now(), "%S") as double
-        print("Running " + (i + 1) as string + "/" + total as string+ "\r")
-        printflush()
-        parseTestFile()
-        end := time.formatTime(time.now(), "%S") as double
-        println((end - start) as string)
-        i = i + 1
-    }
+    count := 25 // use 250 to see slowing down
+    
+    // Not running
+    //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/random.json", count)
+    //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/apache_builds.json", count)
+    //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/github_events.json", count)
+    //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/update-center.json", count)
+    //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/mesh.json", count)
+    //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/mesh.pretty.json", count)
+    //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/nested.json", count)
+
+    // Instable
+    //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/instruments.json", count)
     
     
+    // Working but slowing down and probably leaking
+    runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/twitter_timeline.json", count)
+    runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/repeat.json", count)
+    runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/truenull.json", count)
     
-/*g := json.parse("{\"ff\" : \"ab\\\"cd\"}")
-    println(g.value.objectValue[0].value.stringValue)*/
+    //sleep(20)
     
     
     return 0

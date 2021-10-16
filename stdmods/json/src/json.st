@@ -48,16 +48,38 @@ func parse(value: string) => JSONResult {
     // null
     if (cleanedValue == "null") {
         result.value = JSONValue("null", null, 0, 0.0, false, null, null)
+        return result
     }
     // boolean
-    if (cleanedValue == "true" || value == "false") {
+    if (cleanedValue == "true" || cleanedValue == "false") {
         result.value = JSONValue("bool", null, 0, 0.0, cleanedValue as bool, null, null)
+        return result
+    }
+    // double
+    doubleValue := cleanedValue as double
+    isDouble := false
+    if (str.contains(cleanedValue, ".")) {
+        if (doubleValue != 0.0) {
+            isDouble = true
+        } else {
+            // This checks if it is a 0 double
+            test := str.replace(cleanedValue, "0", "")
+            isDouble = (test.len == 1)
+        }
+    }
+    if (isDouble) {
+        result.value = JSONValue("double", null, 0, doubleValue, false, null, null)
+        return result
     }
     // int
-    intValue := cleanedValue as int
-    if (intValue != 0 || cleanedValue == "0") {
-        result.value = JSONValue("int", null, intValue, 0.0, false, null, null)
+    if (isDouble == false) {
+        intValue := cleanedValue as int
+        if (intValue != 0 || cleanedValue == "0") {
+            result.value = JSONValue("int", null, intValue, 0.0, false, null, null)
+            return result
+        }
     }
+    
     // string
     if (str.startsWith(cleanedValue, "\"") && str.endsWith(cleanedValue, "\"")) {
         // Replace escaped strings
@@ -66,6 +88,7 @@ func parse(value: string) => JSONResult {
         stringValue = str.replace(stringValue, "\\n", "\n")
         stringValue = str.replace(stringValue, "\\t", "\t")
         result.value = JSONValue("string", stringValue, 0, 0.0, false, null, null)
+        return result
     }
     // object
     if (str.startsWith(cleanedValue, "{") && str.endsWith(cleanedValue, "}")) {
@@ -140,6 +163,7 @@ func parse(value: string) => JSONResult {
         }
         if (hasError == false) {
             result.value = JSONValue("object", null, 0, 0.0, false, null, objectProperties)
+            return result
         }
 
     }
