@@ -2,6 +2,7 @@ import str
 
 func testTrim() {
     assertStringEquals(str.trim("   test   "), "test")
+    assertStringEquals(str.trim("   "), "")
 }
 
 func testSubString() {

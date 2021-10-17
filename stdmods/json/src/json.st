@@ -83,23 +83,31 @@ func parse(value: string) => JSONResult {
     // string
     if (str.startsWith(cleanedValue, "\"") && str.endsWith(cleanedValue, "\"")) {
         // Replace escaped strings
-        stringValue := str.subString(cleanedValue, 1, cleanedValue.len - 1)
-        stringValue = str.replace(stringValue, "\\r", "\r")
-        stringValue = str.replace(stringValue, "\\n", "\n")
-        stringValue = str.replace(stringValue, "\\t", "\t")
+        stringValue := ""
+        if (cleanedValue.len > 0) {
+            stringValue = str.subString(cleanedValue, 1, cleanedValue.len - 1)
+            stringValue = str.replace(stringValue, "\\r", "\r")
+            stringValue = str.replace(stringValue, "\\n", "\n")
+            stringValue = str.replace(stringValue, "\\t", "\t")
+        }
         result.value = JSONValue("string", stringValue, 0, 0.0, false, null, null)
         return result
     }
     // object
     if (str.startsWith(cleanedValue, "{") && str.endsWith(cleanedValue, "}")) {
-        objectString := str.trim(str.subString(cleanedValue, 1, cleanedValue.len - 1))
+        objectString := ""
+        objectString = str.trim(str.subString(cleanedValue, 1, cleanedValue.len - 1))
+        objectProperties: JSONProperty[]
+        if (objectString.len == 0) {
+            result.value = JSONValue("object", null, 0, 0.0, false, null, objectProperties)
+            return result
+        }
         propertyValue := ""
         propertyName := ""
         insideQuotes := false
         objectDepth := 0
         arrayDepth := 0
         currentProperty := JSONProperty(null, null)
-        objectProperties: JSONProperty[]
         hasError := false
         oi := 0
         previousChar := ""
@@ -141,6 +149,7 @@ func parse(value: string) => JSONResult {
             }
             // Detect end of property value
             if ((currentChar == "," || ((oi + 1) == objectString.len)) && (insideQuotes == false) && (objectDepth == 0) && (arrayDepth == 0)) {
+                
                 // Remove trailing comma if any
                 if (str.endsWith(propertyValue, ",")) {
                     propertyValue = str.subString(propertyValue, 0, propertyValue.len - 1)

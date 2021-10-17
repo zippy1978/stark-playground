@@ -71,7 +71,7 @@ func testParseObject() {
     assertStringEquals(result.value.objectValue[2].value.objectValue[0].value.type, "string")
     assertStringEquals(result.value.objectValue[2].value.objectValue[0].value.stringValue, "subvalue1")
 
-    resultEmptyObject := json.parse("{}")
+    resultEmptyObject := json.parse("{\n }")
     assertTrue(resultEmptyObject.value != null)
     assertTrue(resultEmptyObject.value.type == "object")
     assertTrue(resultEmptyObject.value.objectValue != null)
@@ -93,6 +93,11 @@ func testParseArray() {
     assertStringEquals(result.value.arrayValue[1].objectValue[0].value.arrayValue[1].objectValue[0].name, "name")
     assertStringEquals(result.value.arrayValue[1].objectValue[0].value.arrayValue[1].objectValue[0].value.type, "string")
     assertStringEquals(result.value.arrayValue[1].objectValue[0].value.arrayValue[1].objectValue[0].value.stringValue, "item2")
+
+    resultArrayWithEmptyObject := json.parse("[{}]")
+    assertTrue(resultArrayWithEmptyObject.value != null)
+    assertTrue(resultArrayWithEmptyObject.value.type == "array")
+    assertTrue(resultArrayWithEmptyObject.value.arrayValue.len == 1)
 }
 
 

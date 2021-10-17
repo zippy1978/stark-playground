@@ -40,7 +40,12 @@ func trim(value: string) => string {
         end = end - 1
         test = subString(value, end - 1, end)
     }
-    return subString(value, start, end)
+    if (start < end) {
+        return subString(value, start, end)
+    } else {
+        return ""
+    }
+    
 }
 
 /**

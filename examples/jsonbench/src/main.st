@@ -100,8 +100,10 @@ func runTest(url: string, count: int) => int[] {
         
         end := time()
         duration := end - start
+        println(duration as string)
         durations = durations + [duration]
         i = i + 1
+        sleep(1)
     }
     print("Ran with average time of " +  averageTime(durations) as string + "ms")
     print("\r\n")
@@ -118,8 +120,6 @@ func main() => int {
     
     // Not running
     //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/random.json", count)
-    //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/apache_builds.json", count)
-    //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/github_events.json", count)
     //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/update-center.json", count)
     //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/mesh.json", count)
     //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/mesh.pretty.json", count)
@@ -131,8 +131,10 @@ func main() => int {
     
     // Working but slowing down and probably leaking
     runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/twitter_timeline.json", count)
+    runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/github_events.json", count)
     runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/repeat.json", count)
     runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/truenull.json", count)
+    runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/apache_builds.json", count)
     
     //sleep(20)
     
