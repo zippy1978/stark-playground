@@ -100,7 +100,7 @@ func runTest(url: string, count: int) => int[] {
         
         end := time()
         duration := end - start
-        println(duration as string)
+        //println(duration as string)
         durations = durations + [duration]
         i = i + 1
         sleep(1)

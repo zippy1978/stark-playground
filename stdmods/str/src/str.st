@@ -3,8 +3,8 @@
  */
 module str
 
-extern strtok(str: any, delim: any) => any
 extern strlen(str: any ) => int
+extern strstr(str: any, subStr: any) => any
 
 /**
  * Get a sub string of a string.
@@ -18,27 +18,42 @@ func subString(value: string, start: int, end: int) => string {
 }
 
 /**
+ * Get a slice of a string. A slice is a sub string created without memory allocation.
+ * Meaning: it is faster, but inner data may change as it is only pointed from another object.
+ * @param value: original stirng
+ * @param start: sub stirng start index
+ * @param end: sub stirng end index
+ * @return sub string as a new string
+ */
+func slice(value: string, start: int, end: int) => string {
+    slice: string
+    slice.data = offsetCharPointer(value.data, start)
+    slice.len = end - start
+    return slice
+}
+
+/**
  * Trims a string.
  * @param value: original string
  * @return trimmed string as a new string
  */
 func trim(value: string) => string {
-
+    
     if (value.len == 0) {
         return ""
     }
-
+    
     start := 0
     end := value.len
-    test := subString(value, start, start + 1)
+    test := slice(value, start, start + 1)
     while (test == " " || test == "\t" || test == "\r" || test == "\n") {
         start = start + 1
-        test = subString(value, start, start + 1)
+        test = slice(value, start, start + 1)
     }
-    test = subString(value, end - 1, end)
+    test = slice(value, end - 1, end)
     while (test == " " || test == "\t" || test == "\r" || test == "\n") {
         end = end - 1
-        test = subString(value, end - 1, end)
+        test = slice(value, end - 1, end)
     }
     if (start < end) {
         return subString(value, start, end)
@@ -55,7 +70,7 @@ func trim(value: string) => string {
  * @return true if value starts with test
  */
 func startsWith(value: string, test: string) => bool {
-    return subString(value, 0, test.len) == test
+    return slice(value, 0, test.len) == test
 }
 
 /**
@@ -65,7 +80,7 @@ func startsWith(value: string, test: string) => bool {
  * @return true if value ends with test
  */
 func endsWith(value: string, test: string) => bool {
-    return subString(value, value.len - test.len, value.len) == test
+    return slice(value,  value.len - test.len, value.len) == test
 }
 
 /**
@@ -75,15 +90,40 @@ func endsWith(value: string, test: string) => bool {
  * @return a string[] contaning split string parts
  */
 func split(value: string, separator: string) => string[] {
-    separatorAsCString := separator.data
+
     result: string[]
-    valueAsCString := toCString(value)
-    ptr := strtok(valueAsCString, separatorAsCString)
-    while(ptr != null) {
-        result = result + [fromCString(ptr)]
-        ptr = strtok(null, separatorAsCString)
+    
+    ptr := strstr(value.data, separator.data)
+    startPtr := value.data
+    previousLen := value.len
+    len := 0
+    while (ptr != null) {
+        len = strlen(ptr)
+        slice: string
+        slice.data = startPtr
+        slice.len = previousLen - len
+        if (slice.len > 0) {
+            result = result + [str.subString(slice, 0, slice.len)]
+        }
+        startPtr = offsetCharPointer(ptr, separator.len)
+        previousLen = len - separator.len
+        ptr = strstr(startPtr, separator.data)
     }
+     
+    // Last occurence case
+    if (previousLen > 0 ) {
+        slice: string
+        slice.data = startPtr
+        slice.len = value.len - len
+        if (slice != separator) {
+            result = result + [str.subString(slice, 0, slice.len)]
+        }
+        
+    }
+    
+    
     return result
+    
 }
 
 /**
@@ -93,15 +133,7 @@ func split(value: string, separator: string) => string[] {
  * @return true/false
  */
 func contains(value: string, subString: string) => bool {
-    found := 0
-    subStringCString := toCString(subString)
-    valueCString := toCString(value)
-    ptr := strtok(valueCString, subStringCString)
-    while(ptr != null) {
-        found = found + 1
-        ptr = strtok(null, subStringCString)
-    }
-    return found > 1
+    return strstr(value.data, subString.data) != null
 }
 
 /**

@@ -1,5 +1,4 @@
 import perf
-import str
 
 extern sleep(d: int)
 
@@ -35,17 +34,27 @@ func analyzeLogger(message: string, level: string) {
 }
 
 func main() => int {
-
-    count := 25
     
-    r := perf.measure("string: memory allocations", count, measureLogger, stringMemoryAllocations)
+    count := 50
+    
+    r := perf.measure("string : C interop", count, measureLogger, stringCInterop)
+    perf.analyze(r, analyzeLogger, 0.05, 0.15)
+    
+    r = perf.measure("string: memory allocations", count, measureLogger, stringMemoryAllocations)
+    perf.analyze(r, analyzeLogger, 0.05, 0.15)
+    
+    r = perf.measure("string: concatenations", count, measureLogger, stringConcat)
     perf.analyze(r, analyzeLogger, 0.05, 0.15)
 
+    r = perf.measure("str: contains", count, measureLogger, strContains)
+    perf.analyze(r, analyzeLogger, 0.05, 0.15)
+    
     r = perf.measure("str: split", count, measureLogger, strSplit)
     perf.analyze(r, analyzeLogger, 0.05, 0.15)
-
+    
     r = perf.measure("str: trim", count, measureLogger, strTrim)
     perf.analyze(r, analyzeLogger, 0.05, 0.15)
+
     
     return 0
 }

@@ -11,6 +11,12 @@ func testSubString() {
     assertStringEquals(str.subString("Hello", 2, 3), "l")
 }
 
+func testSlice() {
+    assertStringEquals(str.slice("Hello", 0, 2), "He")
+    assertStringEquals(str.slice("Hello", 0, 1), "H")
+    assertStringEquals(str.slice("Hello", 2, 3), "l")
+}
+
 func testStartsWith() {
     assertTrue(str.startsWith("Hello World !", "Hello"))
 }
@@ -40,4 +46,5 @@ func testReplace() {
 
 func testContains() {
     assertTrue(str.contains("hello :) !", ":)"))
+    assertTrue(str.contains("hello :) !", ":(") == false)
 }

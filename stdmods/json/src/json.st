@@ -96,7 +96,7 @@ func parse(value: string) => JSONResult {
     // object
     if (str.startsWith(cleanedValue, "{") && str.endsWith(cleanedValue, "}")) {
         objectString := ""
-        objectString = str.trim(str.subString(cleanedValue, 1, cleanedValue.len - 1))
+        objectString = str.trim(str.slice(cleanedValue, 1, cleanedValue.len - 1))
         objectProperties: JSONProperty[]
         if (objectString.len == 0) {
             result.value = JSONValue("object", null, 0, 0.0, false, null, objectProperties)
@@ -112,7 +112,9 @@ func parse(value: string) => JSONResult {
         oi := 0
         previousChar := ""
         while (oi < objectString.len && (hasError == false)) {
-            currentChar := str.subString(objectString, oi, oi +1)
+            // Performance hack: create a string without allocating !
+            currentChar := str.slice(objectString, oi, oi + 1)
+
             // Detect values between quotes
             if (currentChar == "\"" && previousChar != "\\") {
                 insideQuotes = (insideQuotes == false)
@@ -189,7 +191,8 @@ func parse(value: string) => JSONResult {
         previousChar := ""
         oi := 0
         while (oi < arrayString.len && (hasError == false)) {
-            currentChar := str.subString(arrayString, oi, oi +1)
+            // Performance hack : no memory allocation
+            currentChar := str.slice(arrayString, oi, oi +1)
             // Detect values between quotes
             if (currentChar == "\"" && previousChar != "\\") {
                 insideQuotes = (insideQuotes == false)
@@ -214,7 +217,7 @@ func parse(value: string) => JSONResult {
             if ((currentChar == "," || ((oi + 1) == arrayString.len)) && (insideQuotes == false) && (objectDepth == 0) && (arrayDepth == 0)) {
                 // Remove trailing comma if any
                 if (str.endsWith(entryValue, ",")) {
-                    entryValue = str.subString(entryValue, 0, entryValue.len - 1)
+                    entryValue = str.slice(entryValue, 0, entryValue.len - 1)
                 }
                 pr := parse(entryValue)
                 result.error = pr.error
