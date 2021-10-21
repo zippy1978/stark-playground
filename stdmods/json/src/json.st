@@ -58,26 +58,25 @@ func parse(value: string) => JSONResult {
         return result
     }
     
-    // double
+    // double or double
     doubleValue := cleanedValue as double
     intValue := cleanedValue as int
     isDouble := false
-    // A double either starts with a "0" or as an int value > 0 + contains a "."
-    if ((str.startsWith(cleanedValue, "0") || intValue > 0) && str.contains(cleanedValue, ".")) {
-        if (doubleValue != 0.0) {
-            isDouble = true
-        } else {
-            //This checks if it is a 0 double
-            test := str.replace(cleanedValue, "0", "")
-            isDouble = (test.len == 1)
+    if (str.startsWith(cleanedValue, "0") || str.startsWith(cleanedValue, "-0") || intValue != 0) {
+        if (str.contains(cleanedValue, ".")) {
+            if (doubleValue != 0.0) {
+                isDouble = true
+            } else {
+                //This checks if it is a 0 double
+                test := str.replace(cleanedValue, "0", "")
+                isDouble = (test.len == 1)
+            }
         }
     }
     if (isDouble) {
         result.value = JSONValue("double", null, 0, doubleValue, false, null, null)
         return result
-    }
-    // int
-    if (isDouble == false) {
+    } else {
         if (intValue != 0 || cleanedValue == "0") {
             result.value = JSONValue("int", null, intValue, 0.0, false, null, null)
             return result

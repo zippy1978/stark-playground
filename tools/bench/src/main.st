@@ -1,6 +1,7 @@
 import perf
 
 extern sleep(d: int)
+extern GC_expand_hp(bytes: int)
 
 func measureLogger(message: string, level: string) {
     print(message + "\r")
@@ -35,6 +36,8 @@ func analyzeLogger(message: string, level: string) {
 
 func main() => int {
     
+    //GC_expand_hp(536870912)
+
     count := 50
     
     r := perf.measure("string : C interop", count, measureLogger, stringCInterop)
