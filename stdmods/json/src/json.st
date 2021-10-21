@@ -43,27 +43,31 @@ struct JSONResult {
  * @result a JSONResult containing either a value or an error
  */
 func parse(value: string) => JSONResult {
-    
     result := JSONResult(null, null)
     cleanedValue := str.trim(value)
+    
     // null
     if (cleanedValue == "null") {
         result.value = JSONValue("null", null, 0, 0.0, false, null, null)
         return result
     }
+    
     // boolean
     if (cleanedValue == "true" || cleanedValue == "false") {
         result.value = JSONValue("bool", null, 0, 0.0, cleanedValue as bool, null, null)
         return result
     }
+    
     // double
     doubleValue := cleanedValue as double
+    intValue := cleanedValue as int
     isDouble := false
-    if (str.contains(cleanedValue, ".")) {
+    // A double either starts with a "0" or as an int value > 0 + contains a "."
+    if ((str.startsWith(cleanedValue, "0") || intValue > 0) && str.contains(cleanedValue, ".")) {
         if (doubleValue != 0.0) {
             isDouble = true
         } else {
-            // This checks if it is a 0 double
+            //This checks if it is a 0 double
             test := str.replace(cleanedValue, "0", "")
             isDouble = (test.len == 1)
         }
@@ -74,7 +78,6 @@ func parse(value: string) => JSONResult {
     }
     // int
     if (isDouble == false) {
-        intValue := cleanedValue as int
         if (intValue != 0 || cleanedValue == "0") {
             result.value = JSONValue("int", null, intValue, 0.0, false, null, null)
             return result
