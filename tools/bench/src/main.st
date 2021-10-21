@@ -46,6 +46,12 @@ func main() => int {
     r = perf.measure("string: concatenations", count, measureLogger, stringConcat)
     perf.analyze(r, analyzeLogger, 0.05, 0.15)
 
+    r = perf.measure("json: parse", count, measureLogger, jsonParse)
+    perf.analyze(r, analyzeLogger, 0.05, 0.15)
+
+    r = perf.measure("str: replace", count, measureLogger, strReplace)
+    perf.analyze(r, analyzeLogger, 0.05, 0.15)
+
     r = perf.measure("str: contains", count, measureLogger, strContains)
     perf.analyze(r, analyzeLogger, 0.05, 0.15)
     

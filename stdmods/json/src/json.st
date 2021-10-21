@@ -43,6 +43,7 @@ struct JSONResult {
  * @result a JSONResult containing either a value or an error
  */
 func parse(value: string) => JSONResult {
+    
     result := JSONResult(null, null)
     cleanedValue := str.trim(value)
     // null
@@ -85,7 +86,7 @@ func parse(value: string) => JSONResult {
         // Replace escaped strings
         stringValue := ""
         if (cleanedValue.len > 0) {
-            stringValue = str.subString(cleanedValue, 1, cleanedValue.len - 1)
+            stringValue = str.slice(cleanedValue, 1, cleanedValue.len - 1)
             stringValue = str.replace(stringValue, "\\r", "\r")
             stringValue = str.replace(stringValue, "\\n", "\n")
             stringValue = str.replace(stringValue, "\\t", "\t")
@@ -95,8 +96,7 @@ func parse(value: string) => JSONResult {
     }
     // object
     if (str.startsWith(cleanedValue, "{") && str.endsWith(cleanedValue, "}")) {
-        objectString := ""
-        objectString = str.trim(str.slice(cleanedValue, 1, cleanedValue.len - 1))
+        objectString := str.trim(str.slice(cleanedValue, 1, cleanedValue.len - 1))
         objectProperties: JSONProperty[]
         if (objectString.len == 0) {
             result.value = JSONValue("object", null, 0, 0.0, false, null, objectProperties)
@@ -181,7 +181,7 @@ func parse(value: string) => JSONResult {
 
     // array
     if (str.startsWith(cleanedValue, "[") && str.endsWith(cleanedValue, "]")) {
-        arrayString := str.trim(str.subString(cleanedValue, 1, cleanedValue.len - 1))
+        arrayString := str.trim(str.slice(cleanedValue, 1, cleanedValue.len - 1))
         entries: JSONValue[]
         objectDepth := 0
         arrayDepth := 0
@@ -235,6 +235,7 @@ func parse(value: string) => JSONResult {
         }
         if (hasError == false) {
             result.value = JSONValue("array", null, 0, 0.0, false, entries, null)
+            return result
         }
 
     }

@@ -61,7 +61,8 @@ stark_binary(
     deps = [
         "//stdmods:perf",
         "//stdmods:str",
-        "//stdmods:fs"
+        "//stdmods:fs",
+        "//stdmods:json",
     ],
 )
 

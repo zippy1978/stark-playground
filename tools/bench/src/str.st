@@ -57,3 +57,20 @@ func strTrim() {
         i = i + 1
     }
 }
+
+func strReplace() {
+    
+    // Test string
+    testString := ""
+    i := 0
+    while (i < 300) {
+        testString = testString + " test string "
+        i = i + 1
+    }
+    
+    i = 0
+    while(i < 3000) {
+        str.replace(testString, "test", "toto")
+        i = i + 1
+    }
+}

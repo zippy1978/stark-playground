@@ -1,6 +1,8 @@
 extern exit(code: int)
 extern sleep(duration: int)
 extern fgets(buffer: any, maxLength: int, file: any) => any
+extern GC_enable_incremental()
+extern GC_expand_hp(bytes: int)
 
 import fs
 import http
@@ -86,6 +88,7 @@ func runTest(url: string, count: int) => int[] {
     i := 0
     durations : int[]
     jsonString := readTestFile()
+
     while (i < count) {
         start := time()
         print("Running " + (i + 1) as string + "/" + count as string)
@@ -113,8 +116,11 @@ func runTest(url: string, count: int) => int[] {
 
 
 func main() => int {
+
+    //GC_enable_incremental()
+    //GC_expand_hp(10240)
     
-    println("Welcome to th JSON parse bench !")
+    println("Welcome to the JSON parse bench !")
     
     count := 25 // use 250 to see slowing down
     

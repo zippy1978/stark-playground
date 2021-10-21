@@ -97,9 +97,9 @@ func split(value: string, separator: string) => string[] {
     startPtr := value.data
     previousLen := value.len
     len := 0
+    slice: string
     while (ptr != null) {
         len = strlen(ptr)
-        slice: string
         slice.data = startPtr
         slice.len = previousLen - len
         if (slice.len > 0) {
@@ -112,7 +112,6 @@ func split(value: string, separator: string) => string[] {
      
     // Last occurence case
     if (previousLen > 0 ) {
-        slice: string
         slice.data = startPtr
         slice.len = value.len - len
         if (slice != separator) {
