@@ -164,15 +164,20 @@ func join(parts: string[], separator: string) => string {
  * return a string
  */
 func replace(value: string, old: string, new: string) => string {
-    parts := split(value, old)
-    result := ""
-    if (startsWith(value, old)) {
-        result = result + new
+    if (contains(value, old)) {
+        parts := split(value, old)
+        result := ""
+        if (startsWith(value, old)) {
+            result = result + new
+        }
+        result = result + join(parts, new)
+        if (endsWith(value, old)) {
+            result = result + new
+        }
+        return result
+    } else {
+        // If string to replace not found: return a copy of the original string
+        return (fromCString(value.data))
     }
-    result = result + join(parts, new)
-    if (endsWith(value, old)) {
-        result = result + new
-    }
-    return result
 }
 

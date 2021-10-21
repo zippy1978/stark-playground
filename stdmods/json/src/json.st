@@ -88,7 +88,7 @@ func parse(value: string) => JSONResult {
         // Replace escaped strings
         stringValue := ""
         if (cleanedValue.len > 0) {
-            stringValue = str.slice(cleanedValue, 1, cleanedValue.len - 1)
+            stringValue = str.subString(cleanedValue, 1, cleanedValue.len - 1)
             stringValue = str.replace(stringValue, "\\r", "\r")
             stringValue = str.replace(stringValue, "\\n", "\n")
             stringValue = str.replace(stringValue, "\\t", "\t")

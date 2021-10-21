@@ -117,7 +117,7 @@ func runTest(url: string, count: int) => int[] {
 
 func main() => int {
 
-    //GC_enable_incremental()
+    GC_enable_incremental()
 
     // Much better perfs !
     //GC_expand_hp(1073741824)
