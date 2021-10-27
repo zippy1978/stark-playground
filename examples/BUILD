@@ -68,18 +68,17 @@ stark_binary(
 
 
 stark_binary(
-    name = "ui",
-    srcs = glob(["ui/src/*.st"]),
+    name = "gfxdemo",
+    srcs = glob(["gfxdemo/src/*.st"]),
     deps = [
          "//stdmods:gfx"
     ],
+    
     linkopts = [
-        #"-lGLEW",
-        #"-L/usr/local/Cellar/glfw/3.3.4/lib",
-        #"-L/usr/local/lib",
-        #"-lglfw",
-        #"-framework OpenGL",
-        
-        "-l SDL2-2.0.0",
+        "-I/usr/local/Cellar/allegro/5.2.7.0/include",
+        "-L/usr/local/Cellar/allegro/5.2.7.0/lib",
+        "-lallegro_font",
+        "-lallegro_image",
+        "-lallegro",
     ],
 )

@@ -1,0 +1,30 @@
+extern al_run_main(argc: int, argv: any, originalMain: func(int, any) => int) => int
+extern al_install_system(version: int, atExit: func() => int) => bool
+extern al_init_image_addon() => bool
+extern al_get_allegro_version() => int
+extern al_create_display(width: int, height: int) => any
+extern al_create_timer(speed: double) => any
+extern al_create_event_queue() => any
+extern al_create_builtin_font() => any
+extern al_register_event_source(queue: any, source: any)
+extern al_get_display_event_source(display: any) => any
+extern al_get_timer_event_source(timer: any) => any
+extern al_wait_for_event(queue: any, event: any)
+extern al_destroy_display(display: any)
+extern al_destroy_timer(timer: any)
+extern al_destroy_event_queue(queue: any)
+extern al_destroy_font(font: any)
+extern al_destroy_bitmap(bitmap: any)
+extern al_is_event_queue_empty(queue: any) => bool
+extern al_flip_display()
+extern al_start_timer(timer: any)
+extern al_clear_to_color(color: any)
+extern al_load_bitmap(path: any) => any
+
+struct AllegroEvent {type: string}
+struct AllegroColor {r: double, g: double, b: double, a: double}
+extern fromAllegroEvent(event: any) => AllegroEvent
+extern createAllegroEvent() => any
+extern allegroClearToColor(color: AllegroColor)
+extern allegroDrawText(font: any, color: AllegroColor, x: int, y: int, flags: int, text: string)
+extern allegroDrawBitmap(bitmap: any, x: int, y: int, flags: int)

@@ -1,6 +1,6 @@
 load(
     "@rules_stark//stark:defs.bzl",
-    "stark_binary",
+    "stark_clang_module",
     "stark_module",
     "stark_test",
 )
@@ -64,8 +64,6 @@ stark_test(
     srcs = glob(["json/tests/*.test.st"]),
     deps = [
         ":json",
-        # TODO: should not have to pass transitive dependency again here !
-        ":str",
     ],
 )
 
@@ -78,8 +76,18 @@ stark_module(
     ],
 )
 
+stark_clang_module(
+    name = "_allegro5",
+    srcs = glob(["_allegro5/src/*.c"]),
+    hdr = "_allegro5/src/bridge.sth",
+)
+
 stark_module(
     name = "gfx",
     srcs = glob(["gfx/src/*.st"]),
     visibility = ["//visibility:public"],
+    deps = [
+        ":fs",
+        "_allegro5",
+    ],
 )
