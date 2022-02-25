@@ -5,6 +5,11 @@ import gfx
 
 func main() => int {
 
+    // FIXE ME : local var in while segfaults !
+    /*while(true) {
+       f := gfx.Event("OK")
+    }*/
+
     // Gfx start function
     return gfx.run(func(argc: int, argv: any) => int {
         
@@ -27,30 +32,37 @@ func main() => int {
         blueColor := gfx.Color(0.0, 0.0, 1.0, 1.0)
 
         // Bitmaps
-        tonyBitmap := gfx.loadBitmap(context, "/Users/ggrousset/Desktop/tony.png")
+        tonyBitmap := gfx.loadBitmap(context, "/Users/ggrousset/Projects/perso/starklang/tony.png")
 
         // Main loop
         shouldClose := false
         redraw := true
         x := 0 // for animation testing
-        while(shouldClose != true) {
-            
-            // Retrieve event
-            event := gfx.waitForEvent(context)
 
+        event: gfx.Event
+        DISPLAY_CLOSE := "DISPLAY_CLOSE"
+        TIMER := "TIMER"
+        
+        while(shouldClose != true) {
+           
+            // Retrieve event
+            event = gfx.waitForEvent(context)
+            
+            
             // Handle events
-            if (event.type == "DISPLAY_CLOSE") {
+            if (event.type == DISPLAY_CLOSE) {
                 shouldClose = true
             }
-            if (event.type == "TIMER") {
+            if (event.type == TIMER) {
                 redraw = true
                 //x = x + 1
             }
-
+            
             // Draw
             if (redraw == true && gfx.isEventQueueEmpty(context)) {
 
-                gfx.clearToColor(blueColor)
+                // Disabled until issue is fixed in lib
+                //gfx.clearToColor(blueColor as any)
                 gfx.drawText(builtinFont, whiteColor, 20, 20, 0, "Hello Stark !")
 
                 gfx.drawBitmap(tonyBitmap, x, 50, 0)
@@ -59,6 +71,7 @@ func main() => int {
                 gfx.flipDisplay()
                 redraw = false
             }
+            
         }
 
         // Clean up

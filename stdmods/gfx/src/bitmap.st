@@ -6,6 +6,7 @@ struct Bitmap {
     allegroBitmap: any
 }
 
+
 func loadBitmap(context: Context, path: string) => Bitmap {
     // TODO check bitmap is loaded
     b := Bitmap(al_load_bitmap(path.data))

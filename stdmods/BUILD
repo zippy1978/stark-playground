@@ -64,6 +64,7 @@ stark_test(
     srcs = glob(["json/tests/*.test.st"]),
     deps = [
         ":json",
+         ":str",
     ],
 )
 

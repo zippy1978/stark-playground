@@ -1,6 +1,6 @@
 module gfx
 
-import _allegro5
+//import _allegro5
 
 struct Color {
     r: double,

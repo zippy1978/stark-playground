@@ -6,6 +6,7 @@ struct Event {
     type: string
 }
 
+
 func waitForEvent(context: Context) => Event {
     al_wait_for_event(context.queue, context.event)
     event := fromAllegroEvent(context.event)

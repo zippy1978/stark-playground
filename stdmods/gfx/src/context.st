@@ -21,6 +21,7 @@ struct ContextResult {
     error: string
 }
 
+
 func run(startFunc: func(int, any) => int) => int {
     return al_run_main(0, null, startFunc)
 }

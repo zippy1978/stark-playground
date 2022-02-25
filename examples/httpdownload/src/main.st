@@ -31,6 +31,8 @@ func main() => int {
     // Close file
     f = fs.closeFile(f.value)
     handleFileError(f)
+
+    println("file downloaded !")
     
     return 0
 }
