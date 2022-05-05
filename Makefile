@@ -7,6 +7,7 @@ C_FILES= $(wildcard $(SRC_DIR)/*.c)
 
 # Stark configuration
 STARKC := starkc
+#STARK_OPTS := -d -m $(TARGET_MODULES_DIR)
 STARK_OPTS := -m $(TARGET_MODULES_DIR)
 STARK_LINK_OPTS := -l "cc:-lpthread -lcurl -fsanitize=address -I/usr/local/Cellar/allegro/5.2.7.0/include -L/usr/local/Cellar/allegro/5.2.7.0/lib -lallegro_font -lallegro_image -lallegro"
 

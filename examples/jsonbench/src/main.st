@@ -117,34 +117,28 @@ func runTest(url: string, count: int) => int[] {
 
 func main() => int {
 
-    GC_enable_incremental()
-
     // Much better perfs !
-    //GC_expand_hp(1073741824)
+    // Preallocace a lot to avoid GC allocs while running
+    GC_expand_hp(1073741824)
     
     println("Welcome to the JSON parse bench !")
     
     count := 25 // use 250 to see slowing down
     
-    // Not running
+    // Hanging or crashing
     //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/random.json", count)
     //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/update-center.json", count)
     //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/mesh.json", count)
     //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/mesh.pretty.json", count)
     //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/nested.json", count)
 
-    // Instable
-    //runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/instruments.json", count)
-    
-    
-    // Working but slowing down and probably leaking
+    // Working
     runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/twitter_timeline.json", count)
     runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/github_events.json", count)
     runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/repeat.json", count)
     runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/truenull.json", count)
     runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/apache_builds.json", count)
-    
-    //sleep(20)
+    runTest("https://raw.githubusercontent.com/amamchur/iJSONBenchmark/master/payload/instruments.json", count)
     
     
     return 0
